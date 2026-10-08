@@ -196,10 +196,16 @@ const username = document.getElementById("username");
 const avatar = document.getElementById("avatar");
 
 async function showUser(){
-  const { data } = await supabaseClient.auth.getSession();
-  const user = data.session?.user;
+  const { data, error } = await supabaseClient.auth.getUser();
 
-  if(user){
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  const user = data.user;
+
+  if (user) {
     const meta = user.user_metadata || {};
 
     username.textContent =
@@ -208,7 +214,7 @@ async function showUser(){
       meta.preferred_username ||
       "Discord Member";
 
-    if(meta.avatar_url){
+    if (meta.avatar_url) {
       avatar.src = meta.avatar_url;
     }
 
@@ -217,10 +223,14 @@ async function showUser(){
     logout.style.display = "block";
   }
 
-  setTimeout(()=>{
+  setTimeout(() => {
     loading.style.opacity = "0";
-    setTimeout(()=>loading.style.display="none",500);
-  },500);
+
+    setTimeout(() => {
+      loading.style.display = "none";
+    }, 500);
+
+  }, 500);
 }
 
 login.onclick = async () => {
