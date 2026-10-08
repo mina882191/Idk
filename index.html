@@ -2,69 +2,249 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NYXVEIL HOME</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#050507;color:#f5f5f5;font-family:Arial,sans-serif;overflow-x:hidden}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 20% 20%,rgba(150,0,20,.22),transparent 30%),radial-gradient(circle at 80% 70%,rgba(100,0,15,.18),transparent 35%);z-index:-2}
-body:after{content:"";position:fixed;inset:0;pointer-events:none;opacity:.08;background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);background-size:60px 60px;mask-image:linear-gradient(to bottom,black,transparent 80%);z-index:-1}
-nav{position:fixed;top:0;left:0;right:0;height:70px;padding:0 7%;display:flex;align-items:center;justify-content:space-between;background:rgba(5,5,7,.72);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,40,60,.16);z-index:10}
-.logo{font-weight:900;letter-spacing:4px}.logo span{color:#c9142c}
-nav a{color:#aaa;text-decoration:none;margin-left:25px;font-size:13px}nav a:hover{color:#ff3048}
-.hero{min-height:100vh;display:flex;align-items:center;padding:110px 8% 70px;position:relative}
-.hero h1{font-size:clamp(52px,10vw,125px);line-height:.85;margin:15px 0;letter-spacing:-6px;text-shadow:0 0 45px rgba(210,0,35,.25)}
-.kicker{color:#ff3048;letter-spacing:5px;font-size:12px;font-weight:bold}.hero p{max-width:620px;color:#aaa;line-height:1.8}
-.btn{display:inline-block;margin-top:25px;padding:14px 23px;border:1px solid #a30f25;color:white;text-decoration:none;border-radius:3px;background:linear-gradient(90deg,#8d0d20,#3d0710);box-shadow:0 0 30px rgba(180,0,30,.18);transition:.25s}.btn:hover{transform:translateY(-3px);box-shadow:0 0 45px rgba(220,0,40,.35)}
-.orb{position:absolute;width:420px;height:420px;right:8%;top:22%;border:1px solid rgba(255,30,55,.22);border-radius:50%;box-shadow:0 0 100px rgba(160,0,30,.12),inset 0 0 80px rgba(160,0,30,.1);animation:float 5s ease-in-out infinite}.orb:before,.orb:after{content:"";position:absolute;border:1px solid rgba(255,30,55,.18);border-radius:50%;inset:35px}.orb:after{inset:95px}@keyframes float{50%{transform:translateY(-18px) rotate(5deg)}}
-section{padding:100px 8%;border-top:1px solid rgba(255,255,255,.05)}.title{font-size:42px;margin:0 0 12px}.sub{color:#888;max-width:650px;line-height:1.7}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:35px}.card{padding:28px;background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,0,30,.025));border:1px solid rgba(255,255,255,.08);min-height:190px;transition:.3s}.card:hover{border-color:#8e1024;transform:translateY(-6px);box-shadow:0 20px 60px rgba(130,0,20,.15)}.num{color:#ff3048;font-size:12px;letter-spacing:3px}.card h3{margin:18px 0 8px}.card p{color:#888;line-height:1.6}
-.roles{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}.role{padding:12px 18px;border:1px solid #361018;background:#0d080a;color:#ddd}.role b{color:#ff3048}
-footer{padding:45px 8%;color:#666;border-top:1px solid rgba(255,255,255,.06);font-size:12px}
-@media(max-width:750px){nav{padding:0 5%}nav div:last-child{display:none}.hero{padding-left:6%;padding-right:6%}.orb{width:230px;height:230px;right:-50px;top:25%;opacity:.5}.grid{grid-template-columns:1fr}.title{font-size:34px}.hero h1{letter-spacing:-3px}}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#050505;
+  color:#eee;
+  font-family:Arial,sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(circle at 20% 35%,rgba(150,0,30,.22),transparent 35%),
+    radial-gradient(circle at 80% 70%,rgba(100,0,20,.16),transparent 35%);
+  pointer-events:none;
+}
+header{
+  height:110px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 8%;
+  border-bottom:1px solid #1d1d1d;
+}
+.logo{
+  font-weight:800;
+  letter-spacing:6px;
+  font-size:20px;
+}
+.logo span{color:#b31332}
+nav a{
+  color:#777;
+  text-decoration:none;
+  margin-left:32px;
+  font-size:13px;
+}
+main{
+  min-height:calc(100vh - 170px);
+  display:flex;
+  align-items:center;
+  padding:8%;
+}
+.content{max-width:800px}
+.small{
+  color:#c51d3b;
+  letter-spacing:7px;
+  font-size:13px;
+  font-weight:bold;
+}
+h1{
+  font-size:clamp(42px,7vw,86px);
+  margin:15px 0;
+  letter-spacing:-3px;
+}
+p{
+  color:#888;
+  font-size:18px;
+  line-height:1.8;
+}
+button{
+  margin-top:28px;
+  padding:17px 27px;
+  border:1px solid #a91431;
+  background:#99132d;
+  color:white;
+  font-size:15px;
+  cursor:pointer;
+  transition:.25s;
+}
+button:hover{
+  background:#c51d3b;
+  box-shadow:0 0 35px rgba(190,20,55,.35);
+}
+#user{
+  margin-top:25px;
+  display:none;
+  align-items:center;
+  gap:12px;
+  color:#ccc;
+}
+#avatar{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+}
+#logout{
+  margin-top:15px;
+  background:#111;
+  border-color:#333;
+}
+footer{
+  padding:25px 8%;
+  color:#555;
+  border-top:1px solid #151515;
+  font-size:13px;
+}
+
+/* loading */
+#loading{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:#050505;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  transition:.5s;
+}
+.loader{
+  width:45px;
+  height:45px;
+  border:2px solid #351018;
+  border-top-color:#c51d3b;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+.loadingText{
+  margin-top:18px;
+  color:#b31332;
+  letter-spacing:5px;
+  font-size:11px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
+
 <body>
-<nav><div class="logo">NYX<span>VEIL</span> HOME</div><div><a href="#systems">SYSTEMS</a><a href="#roles">ROLES</a><a href="#join">JOIN</a></div></nav>
+
+<div id="loading">
+  <div class="loader"></div>
+  <div class="loadingText">NYXVEIL HOME</div>
+</div>
+
+<header>
+  <div class="logo">NYX<span>VEIL</span> HOME</div>
+  <nav>
+    <a href="#">SYSTEMS</a>
+    <a href="#">ROLES</a>
+    <a href="#">JOIN</a>
+  </nav>
+</header>
 
 <main>
-<section class="hero">
-<div>
-<div class="kicker">WELCOME TO THE COMMUNITY</div>
-<h1>NYXVEIL<br><span style="color:#c9142c">HOME</span></h1>
-<p>พื้นที่กลางของชุมชน NYXVEIL สำหรับสมาชิกทุกคน รวมข่าวสาร กิจกรรม โปรไฟล์ Fan Art และระบบชุมชนไว้ในที่เดียว — ดาร์ก คม และมีชีวิต</p>
-<a class="btn" href="#systems">ENTER THE SYSTEM</a>
-</div><div class="orb"></div>
-</section>
+  <div class="content">
+    <div class="small">THE NEXT STEP</div>
 
-<section id="systems">
-<div class="kicker">COMMUNITY CORE</div><h2 class="title">SYSTEMS</h2><p class="sub">โครงสร้างหลักที่เราจะต่อยอดเป็นระบบจริงของ NYXVEIL HOME</p>
-<div class="grid">
-<div class="card"><span class="num">01 / POSTS</span><h3>Community Posts</h3><p>โพสต์ข้อความ รูปภาพ ตอบกลับ และพูดคุยกับสมาชิก</p></div>
-<div class="card"><span class="num">02 / FAN ART</span><h3>Fan Art Gallery</h3><p>ส่งผลงาน กดไลก์ คอมเมนต์ แชร์ และรายงานผลงาน</p></div>
-<div class="card"><span class="num">03 / EVENTS</span><h3>Events</h3><p>ระบบประกาศและจัดกิจกรรมสำหรับชุมชน</p></div>
-<div class="card"><span class="num">04 / MEMBERS</span><h3>Members</h3><p>สมาชิกจาก Discord พร้อมบทบาทและโปรไฟล์</p></div>
-<div class="card"><span class="num">05 / NOTIFY</span><h3>Notifications</h3><p>แจ้งเตือน Mention, Reply, Like, Comment และกิจกรรม</p></div>
-<div class="card"><span class="num">06 / MODERATION</span><h3>Reports</h3><p>ระบบรายงานและจัดการเนื้อหาโดยทีมงาน</p></div>
-</div>
-</section>
+    <h1>ENTER NYXVEIL HOME</h1>
 
-<section id="roles">
-<div class="kicker">ACCESS CONTROL</div><h2 class="title">NYXVEIL ROLES</h2><p class="sub">สิทธิ์ของระบบจริงจะตรวจสอบจาก Role บน Discord โดยตรง</p>
-<div class="roles"><div class="role"><b>CEO</b> — Full Control</div><div class="role"><b>VICE PRESIDENT</b> — Management</div><div class="role"><b>ADMIN</b> — Moderation</div><div class="role"><b>MEMBER</b> — Community</div></div>
-</section>
+    <p>
+      พื้นที่ชุมชนของ NYXVEIL HOME<br>
+      เข้าสู่ระบบด้วย Discord เพื่อเริ่มใช้งานระบบสมาชิก
+    </p>
 
-<section id="join">
-<div class="kicker">THE NEXT STEP</div><h2 class="title">ENTER NYXVEIL HOME</h2><p class="sub">เว็บไซต์นี้เป็นฐานแรกของระบบ เมื่อเชื่อม Discord + Supabase แล้ว ระบบสมาชิกจริงจะทำงานต่อจากตรงนี้</p>
-<a class="btn" href="#" onclick="login(event)">LOGIN WITH DISCORD</a>
-</section>
+    <button id="login">LOGIN WITH DISCORD</button>
+
+    <div id="user">
+      <img id="avatar">
+      <span id="username"></span>
+    </div>
+
+    <button id="logout" style="display:none">LOGOUT</button>
+  </div>
 </main>
-<footer>© 2026 NYXVEIL HOME — Community Platform</footer>
+
+<footer>
+  © 2026 NYXVEIL HOME — Community Platform
+</footer>
 
 <script>
-function login(e){
- e.preventDefault();
- alert("Discord Login จะเปิดใช้งานหลังเชื่อม Supabase OAuth กับเว็บไซต์จริง");
+const SUPABASE_URL = "https://rsfpzhukmrgubliltkol.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_i1GWMhB02-f30GVZjbtqRA_ADrW5Hk_";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
+const loading = document.getElementById("loading");
+const login = document.getElementById("login");
+const logout = document.getElementById("logout");
+const userBox = document.getElementById("user");
+const username = document.getElementById("username");
+const avatar = document.getElementById("avatar");
+
+async function showUser(){
+  const { data } = await supabaseClient.auth.getSession();
+  const user = data.session?.user;
+
+  if(user){
+    const meta = user.user_metadata || {};
+
+    username.textContent =
+      meta.full_name ||
+      meta.name ||
+      meta.preferred_username ||
+      "Discord Member";
+
+    if(meta.avatar_url){
+      avatar.src = meta.avatar_url;
+    }
+
+    userBox.style.display = "flex";
+    login.style.display = "none";
+    logout.style.display = "block";
+  }
+
+  setTimeout(()=>{
+    loading.style.opacity = "0";
+    setTimeout(()=>loading.style.display="none",500);
+  },500);
 }
+
+login.onclick = async () => {
+  loading.style.display = "flex";
+  loading.style.opacity = "1";
+
+  await supabaseClient.auth.signInWithOAuth({
+    provider:"discord",
+    options:{
+      redirectTo:window.location.origin
+    }
+  });
+};
+
+logout.onclick = async () => {
+  loading.style.display = "flex";
+  loading.style.opacity = "1";
+
+  await supabaseClient.auth.signOut();
+  location.reload();
+};
+
+showUser();
 </script>
+
 </body>
 </html>
