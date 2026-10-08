@@ -199,8 +199,12 @@ async function showUser(){
   const { data, error } = await supabaseClient.auth.getUser();
 
   if (error) {
-    console.error(error);
-    return;
+  console.error(error);
+  loading.style.opacity = "0";
+  setTimeout(() => {
+    loading.style.display = "none";
+  }, 500);
+  return;
   }
 
   const user = data.user;
